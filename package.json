@@ -1,0 +1,95 @@
+{
+  "name": "unplugin-webfont",
+  "version": "0.1.0",
+  "description": "通用字体转换工具，支持多种格式和文本子集化",
+  "type": "module",
+  "main": "./dist/unplugin/index.cjs",
+  "module": "./dist/unplugin/index.js",
+  "types": "./dist/unplugin/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/unplugin/index.d.ts",
+      "require": "./dist/unplugin/index.cjs",
+      "import": "./dist/unplugin/index.js"
+    },
+    "./vite": {
+      "types": "./dist/unplugin/vite.d.ts",
+      "require": "./dist/unplugin/vite.cjs",
+      "import": "./dist/unplugin/vite.js"
+    },
+    "./webpack": {
+      "types": "./dist/unplugin/webpack.d.ts",
+      "require": "./dist/unplugin/webpack.cjs",
+      "import": "./dist/unplugin/webpack.js"
+    },
+    "./rollup": {
+      "types": "./dist/unplugin/rollup.d.ts",
+      "require": "./dist/unplugin/rollup.cjs",
+      "import": "./dist/unplugin/rollup.js"
+    }
+  },
+  "bin": {
+    "webfont": "./dist/cli/index.cjs"
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "npm run build:lib && npm run build:ui",
+    "build:lib": "tsup",
+    "build:ui": "cd src/ui && npm install && vite build",
+    "dev:ui": "cd src/ui && vite",
+    "test": "vitest",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.{ts,vue}\"",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "font",
+    "webfont",
+    "subset",
+    "woff2",
+    "woff",
+    "ttf",
+    "otf",
+    "unplugin",
+    "vite",
+    "webpack",
+    "rollup"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "fontkit": "^2.0.2",
+    "opentype.js": "^1.3.4",
+    "fontmin": "^1.1.0",
+    "wawoff2": "^2.0.1",
+    "pako": "^2.1.0",
+    "unplugin": "^1.7.1",
+    "commander": "^11.1.0",
+    "inquirer": "^9.2.12",
+    "chalk": "^5.3.0",
+    "ora": "^7.0.1",
+    "cli-progress": "^3.12.0",
+    "glob": "^10.3.10",
+    "open": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "@types/fontkit": "^2.0.7",
+    "@types/opentype.js": "^1.3.8",
+    "@types/inquirer": "^9.0.7",
+    "@types/pako": "^2.0.3",
+    "typescript": "^5.3.3",
+    "tsup": "^8.0.1",
+    "vitest": "^1.1.1",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
+    "vue": "^3.4.3",
+    "vite": "^5.0.10",
+    "element-plus": "^2.5.1",
+    "@vitejs/plugin-vue": "^5.0.2"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
+}

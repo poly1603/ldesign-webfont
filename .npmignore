@@ -1,0 +1,29 @@
+# 源代码
+src/
+test/
+examples/
+
+# 配置文件
+tsconfig.json
+tsup.config.ts
+.eslintrc
+.prettierrc
+
+# 文档
+ARCHITECTURE.md
+IMPLEMENTATION_GUIDE.md
+
+# 开发文件
+*.log
+.DS_Store
+.vscode
+.idea
+
+# Git
+.git
+.gitignore
+
+# 临时文件
+temp
+.temp
+*.tmp
