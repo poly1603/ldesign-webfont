@@ -386,11 +386,156 @@ body {
 }
 ```
 
+## 🏗️ 项目架构
+
+```
+src/
+├── cli/                    # CLI 命令实现
+│   ├── commands/           # 各个子命令
+│   └── index.ts            # CLI 入口
+├── constants/              # 常量定义
+│   └── index.ts            # 魔数、预设、默认配置
+├── core/                   # 核心功能
+│   ├── analyzer.ts         # 字体分析和优化建议
+│   ├── converter.ts        # 格式转换
+│   ├── detector.ts         # 格式检测
+│   ├── generator.ts        # CSS 生成
+│   └── subsetter.ts        # 子集化处理
+├── errors/                 # 错误处理
+│   └── index.ts            # 自定义错误类型
+├── types/                  # TypeScript 类型
+│   └── index.ts            # 类型定义和守卫
+├── unplugin/               # 构建工具插件
+│   ├── index.ts            # unplugin 入口
+│   ├── vite.ts             # Vite 插件
+│   ├── webpack.ts          # Webpack 插件
+│   └── rollup.ts           # Rollup 插件
+└── utils/                  # 工具函数
+    └── index.ts            # 缓存、验证、格式化等
+```
+
+## 🛠️ API 参考
+
+### 字体分析
+
+```typescript
+import { analyzeFont, generateReport } from 'unplugin-webfont'
+
+// 分析字体文件
+const analysis = await analyzeFont(fontBuffer)
+
+console.log(analysis.info.family)         // 字体家族名
+console.log(analysis.charStats.cjkCount)  // CJK 字符数
+console.log(analysis.suggestions)         // 优化建议
+
+// 生成分析报告
+const report = generateReport(analysis)
+console.log(report)
+```
+
+### 字符集预设
+
+```typescript
+import {
+  CHAR_PRESETS,
+  getCharPresets,
+  getBasicLatinChars,
+  categorizeChars,
+} from 'unplugin-webfont'
+
+// 使用预设字符集
+const digits = CHAR_PRESETS.DIGITS           // '0123456789'
+const latin = CHAR_PRESETS.BASIC_LATIN       // ASCII 可打印字符
+
+// 组合多个预设
+const chars = getCharPresets(['DIGITS', 'LETTERS', 'CJK_PUNCTUATION'])
+
+// 分类字符
+const { ascii, cjk, latin, other } = categorizeChars('你好Hello123')
+```
+
+### 子集化并获取统计
+
+```typescript
+import { subsetFontWithStats } from 'unplugin-webfont'
+
+const result = await subsetFontWithStats({
+  fontBuffer,
+  text: '你好世界Hello World',
+})
+
+console.log(`原始大小: ${result.originalSize}`)  // 原始大小
+console.log(`子集大小: ${result.subsetSize}`)    // 子集后大小
+console.log(`减小: ${result.reduction}%`)         // 减小百分比
+console.log(`字符数: ${result.charCount}`)       // 包含的字符数
+```
+
+### Unicode 范围检测
+
+```typescript
+import { detectUnicodeRange, checkCharSupport } from 'unplugin-webfont'
+
+// 检测字符的 Unicode 范围
+const range = detectUnicodeRange('你好世界')
+console.log(range)  // 'U+4F60, U+597D, U+4E16, U+754C'
+
+// 检查字体是否支持指定字符
+const support = await checkCharSupport(fontBuffer, '你好Hello')
+console.log(`支持率: ${support.supportRate}%`)
+console.log(`缺失: ${support.missing.join(', ')}`)
+```
+
+### 错误处理
+
+```typescript
+import {
+  WebFontError,
+  SubsetError,
+  isWebFontError,
+  wrapError,
+} from 'unplugin-webfont'
+
+try {
+  await convertFont(options)
+} catch (error) {
+  if (isWebFontError(error)) {
+    console.error(`[错误 ${error.code}] ${error.message}`)
+  }
+}
+```
+
+### 工具函数
+
+```typescript
+import {
+  formatBytes,
+  calculateCompressionRatio,
+  MemoryCache,
+  ProgressTracker,
+} from 'unplugin-webfont'
+
+// 格式化字节
+formatBytes(1024 * 1024)  // '1.0 MB'
+
+// 计算压缩率
+const ratio = calculateCompressionRatio(1000, 600)  // 40
+
+// 使用缓存
+const cache = new MemoryCache<Buffer>(100)
+cache.set('key', buffer, 60000)  // 1 分钟 TTL
+const cached = cache.get('key')
+
+// 进度追踪
+const progress = new ProgressTracker(100, (info) => {
+  console.log(`${info.percent}% - ETA: ${info.eta}ms`)
+})
+progress.update(10)
+```
+
 ## 📞 联系方式
 
-- 作者: Your Name
-- Email: your.email@example.com
-- GitHub: [@yourusername](https://github.com/yourusername)
+- GitHub: [unplugin-webfont](https://github.com/ldesign/unplugin-webfont)
+- Issues: [报告问题](https://github.com/ldesign/unplugin-webfont/issues)
 
 ---
 
